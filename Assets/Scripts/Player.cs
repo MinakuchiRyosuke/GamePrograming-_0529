@@ -6,11 +6,6 @@ using R3.Triggers;
 public class Player : MonoBehaviour
 {
     [SerializeField] float speed;
-    [SerializeField] float jumpSpeed;
-
-    public float MaxLife => 100f;
-    public ReactiveProperty<float> life { get; private set; } = new();
-
     PlayerInput playerInput;
     Rigidbody2D rb;
 
@@ -19,7 +14,6 @@ public class Player : MonoBehaviour
     {
         playerInput = GetComponent<PlayerInput>();
         rb = GetComponent<Rigidbody2D>();
-        life.Value = MaxLife;
     }
 
     // Update is called once per frame
@@ -30,6 +24,7 @@ public class Player : MonoBehaviour
         if (move.x != 0f)
         {
             rb.linearVelocityX = move.x * speed;
+            rb.linearVelocityY = move.y * speed;
 
             // 向き
             var localScale = transform.localScale;
@@ -42,12 +37,6 @@ public class Player : MonoBehaviour
                 localScale.x = -1f;
             }
             transform.localScale = localScale;
-        }
-
-        // ジャンプ
-        if (playerInput.actions["Jump"].WasPressedThisFrame())
-        {
-            rb.linearVelocityY = jumpSpeed;
         }
     }
 }

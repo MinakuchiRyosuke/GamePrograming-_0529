@@ -16,7 +16,6 @@ public class LifeGauge : MonoBehaviour
     void Start()
     {
         // ライフの最大値
-        maxLifeText.text = player.MaxLife.ToString();
     }
 
     // Update is called once per frame
