@@ -1,33 +1,27 @@
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Enemy : MonoBehaviour
 {
     [SerializeField] private LayerMask stageLayer;
+    [SerializeField] private Eye eye;
 
     private Rigidbody2D rb;
-    private float speed = 8.0f;
+    private float speed = 7.5f;
     private Vector2 _direction;
     private Vector2 _directionReserve;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        _direction = Vector2.right;
+        _direction = Vector2.left;
     }
 
     private void Update()
     {
-        if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
-        {
-            _directionReserve.x = Input.GetAxisRaw("Horizontal");
-            _directionReserve.y = Input.GetAxisRaw("Vertical");
-        }
         if(_directionReserve != Vector2.zero)
         {
             CheckDirection(_directionReserve);
         }
-        float angle = Mathf.Atan2(_direction.y, _direction.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
     }
 
     private void FixedUpdate()
@@ -44,7 +38,19 @@ public class Player : MonoBehaviour
         if(hit.collider == null)
         {
             _direction = direction;
+            eye.ChangeEye(direction);
             _directionReserve = Vector2.zero;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        Point point = other.GetComponent<Point>();
+
+        if(point != null)
+        {
+            int index = Random.Range(0, point.Directions.Count);
+            _directionReserve = point.Directions[index];
         }
     }
 }
