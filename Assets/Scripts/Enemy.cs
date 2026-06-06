@@ -53,4 +53,13 @@ public class Enemy : MonoBehaviour
             _directionReserve = point.Directions[index];
         }
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.collider.CompareTag("Player"))
+        {
+            collision.gameObject.SetActive(false);
+            GameManager.instance.GameOver();
+        }
+    }
 }

@@ -2,15 +2,28 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public static GameManager instance {  get; private set; }
+    [SerializeField] private Transform dots;
+
+    private void Awake()
     {
-        
+        instance = this;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void CheckDots()
     {
-        
+        foreach(Transform t in dots)
+        {
+            if(t.gameObject.activeSelf)
+            {
+                return;
+            }
+        }
+        Debug.Log("CLEAR");
+    }
+
+    public void GameOver()
+    {
+        Debug.Log("GAMEOVER");
     }
 }
